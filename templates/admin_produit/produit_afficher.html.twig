@@ -1,0 +1,192 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | Back Office | Gestion des produits{% endblock %}
+
+{% block h1 %}Gestion des produits{% endblock %}
+
+{% block body %}
+
+
+    {#
+        Il existe une variable d'environnement (tableau) qui s'appelle app
+        on y trouve quand un utilisateur est connecté un tableau app.user
+        on y trouve aussi les flashes app.flashes
+    #}
+
+    {#
+        en php
+        foreach($tableau as $key => $value)
+        {
+
+        }
+    #}
+    {% include "flashes/index.html.twig" %}
+
+
+    <a class="btn btn-success my-3" href="{{ path('produit_ajouter') }}">Ajouter</a>
+   
+    {% if produits %} {# produits is not empty #}
+        {# <div class="table-responsive"> #}
+        <table class="table table-striped table-hover text-center mt-3">
+        
+            <thead class="bg-dark text-white">
+
+                <tr>
+                    {# <th></th> #}
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Prix (€)</th>
+                    <th>Catégorie</th>
+                    <th>Marque</th>
+                    <th>Matières</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Date</th>
+                    <th>Modifier</th>
+                    <th>Supprimer</th>
+                </tr>
+            
+            </thead>
+
+
+
+            <tbody>
+            
+                {% for key, produit in produits %}
+                    {#
+                        pour rappel, produits est un tableau d'objets 
+                        on le boucle, à chaque "tour" on extrait un objet
+                        on n'affiche pas un objet, on affiche les propriétés d'un objet 
+                        syntaxe : objet.propriété
+                        --------------------------------------------
+                        filters de twig
+                        syntaxe |nomFilter
+                        par exemple :
+                            upper  : majuscule
+                            lower  : minuscule
+                            capitalize  : 1e lettre en majuscule
+                    #}
+                    <tr class="align-middle">
+                        {# <td>{{ key }}</td> #}
+                   
+                        <td>
+                            <a href="{{ path('fiche_produit' , {'id' : produit.id}) }}">
+                                {{ produit.id }}
+                            </a>
+                        </td>
+                        <td>{{ produit.titre|capitalize }}</td>
+                        <td>{{ produit.prix }}</td>
+
+                        <td>
+                            {% if produit.categorie %}
+                                {{ produit.categorie.nom|capitalize }}
+                            {% else %}
+                                <span class="text-danger fst-italic">N.R</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if produit.marque %}
+                                {{ produit.marque.nom|capitalize }}
+                            {% else %}
+                                <span class="text-danger fst-italic">N.R</span>
+                            {% endif %}
+                        </td>
+
+
+                        <td>
+
+                            {#
+                                produit.titre : titre est une string
+                                produit.categorie :  categorie est un objet 
+                                produit.matiere : tableau d'objets
+
+
+                                s'il y a un objet matière dans le tableau, il est à la position 0
+
+                                si la position zéro n'existe pas le tableau est vide
+                            #}
+                            {% if produit.matiere|length > 0 %}
+                                {% for matiere in produit.matiere %}
+
+                                    {# 
+                                        {% if  matiere == produit.matiere|last %}
+                                            {{ matiere.nom }}.
+                                        {% else %}
+                                            {{ matiere.nom }}, 
+                                        {% endif %} 
+                                    #}
+                                    {{ matiere.nom|capitalize }}
+                                    {% if not loop.last %},{% endif %}
+                                    
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-danger fst-italic">N.R</span>
+                            {% endif %}
+                            
+                        
+                        </td>
+
+
+                        <td>
+                            {% if produit.description %}
+
+                                {% if produit.description|length > 20 %}
+                                    {{ produit.description|slice(0,17) }}...
+                                {% else %}
+                                    {{ produit.description }}
+                                {% endif %}
+                                
+                            {% else %}
+                                <span class="text-danger fst-italic">N.R</span>
+                            {% endif %}
+                        </td>
+
+
+                        <td>
+                            {% if produit.image %}
+                                {# <img src="{{ asset(  "images/upload/#{produit.image}"    ) }}" alt="" class="img80"> #}
+                                <img src="{{ asset(  'images/upload/' ~ produit.image    ) }}" alt="" class="img80">
+                            {% else %}
+                                <img src="{{ asset('images/imageDefault.png')}}" alt="" class="img80">
+                            {% endif %}
+                        </td>
+
+
+                        <td>{{ produit.createdAt|date("d/m/Y H:i") }}</td>
+
+
+                        
+
+
+                        <td>
+                            <a href="{{ path('produit_modifier' , {"id" : produit.id } ) }}">
+                                <i class="text-info" data-feather="edit"></i>
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="{{ path('produit_supprimer', {'id' : produit.id } ) }}" onclick="return confirm('Souhaitez-vous vraiment supprimer ce produit?');">
+                                <i class="text-danger" data-feather="trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    
+                {% endfor %}
+            
+            </tbody>
+        
+        
+        </table>
+        {# </div> #}
+
+
+
+    {% else %}
+        <h4 class='text-center text-danger mt-3 fst-italic'>Aucun produit pour le moment</h4>
+    {% endif %}
+
+
+
+{% endblock %}

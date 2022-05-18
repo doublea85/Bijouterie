@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | {{ produit.titre|capitalize }}{% endblock %}
+
+{% block h1 %}{{ produit.titre|capitalize }}{% endblock %}
+
+{% block body %}
+
+    <a class="btn btn-dark my-3" href="{{app.request.headers.get('referer')}}">Retour</a>
+
+    <div class="shadow col-md-6 mx-auto text-center m-4 p-4">
+    
+        {% if produit.image %}
+            <img src="{{ asset('images/upload/' ~ produit.image) }}" alt="" class="img300">
+        {% else %}
+            <img src="{{ asset('images/imageDefault.png') }}" alt="" class="img300">
+        {% endif %}
+
+        <h3>{{ produit.prix }} €</h3>
+
+        <h3>Description :</h3>
+
+        <p>
+            {% if produit.description %}
+                {{ produit.description }}
+            {% else %}
+                <span class="text-secondary fst-italic">Non renseignée</span>
+            {% endif %}
+        </p>
+
+
+    
+    </div>
+
+
+    {% for commentaire in commentaires %}
+
+       <div class="shadow my-3 p-4">
+
+            <h5>Par : {{ commentaire.user.prenom }} </h5>
+            <h5>Écrit le : {{ commentaire.dateAt|date("d/m/Y H:i") }} </h5>
+            <p>{{ commentaire.message }}</p>
+
+       </div> 
+    {% else %}
+
+        {% if app.user %}
+            <h3>Soyez le premier à laisser votre avis</h3>
+        {% endif %}
+        
+    {% endfor %}
+    
+    {% if app.user %}
+        
+        {{ form_start(formCommentaire)}}
+
+            {{ form_row(formCommentaire.message)}}
+            <input type="submit" value="Envoyer" class="btn btn-dark col-12">
+
+        {{ form_end(formCommentaire)}}
+
+    {% else %}
+        <h4 class="text-center">Veuillez vous <a href="{{ path('app_login')}}">connecter</a> pour laisser un commentaire...</h4>
+    {% endif %}
+
+
+
+
+{% endblock %}

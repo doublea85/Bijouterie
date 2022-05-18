@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent()}} | Back Office | Ajouter une catégorie{% endblock %}
+
+{% block h1 %}Ajouter une catégorie{% endblock %}
+
+{% block body %}
+
+    <a class="btn btn-dark my-3" href="{{ path('app_admin_categorie_index') }}">Retour</a>
+
+    {{ include('admin_categorie/_form.html.twig') }}
+
+{% endblock %}

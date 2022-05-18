@@ -1,0 +1,68 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | Catalogue{% endblock %}
+
+{% block h1 %}Catalogue{% endblock %}
+
+
+{% block body %}
+
+    <div class="row col-md-8 mx-auto">
+
+        <div class="shadow col-md-3 p-2">
+            {{form_start(formFilter)}}
+
+                {{form_row(formFilter.recherche)}}
+
+                {{form_row(formFilter.categories)}}
+
+                {{form_row(formFilter.marques)}}
+
+                {{form_row(formFilter.matieres)}}
+
+                {{form_row(formFilter.min)}}
+                {{form_row(formFilter.max)}}
+
+                {{form_row(formFilter.order)}}
+
+                <input type="submit" value="Rechercher" class="btn btn-primary col-12 mt-2">
+
+            {{form_end(formFilter)}}
+        </div>
+
+        <div class="row justify-content-between col-md-9">
+            {% for produit in produits %}
+                <div class="col-sm-12 col-md-6 col-lg-4 mt-4">
+                        
+                    <div class="rounded p-2 clearfix" style="box-shadow : 2px 2px 6px">
+                                        
+                        <h5 style="min-height: 80px;" class="text-center">
+                            <a href="{{      path(  "fiche_produit"  ,  {'id' : produit.id }   )         }}"  title="Cliquez pour afficher la fiche produit">{{ produit.titre|capitalize}}</a>
+                        </h5>
+                            <a href="{{      path(  "fiche_produit"  ,  {'id' : produit.id }   )         }}" title="Cliquez pour afficher la fiche produit">               
+                            
+                                {% if produit.image %}
+                                    <img src="{{ asset('images/upload/' ~ produit.image ) }}" alt="" class="img-fluid rounded">
+                                {% else %}
+                                    <img src="{{ asset('images/imageDefault.png') }}" alt="" class="img-fluid rounded">
+                                {% endif %}
+                            </a>
+
+                        <h6 class="text-center">{{ produit.marque.nom|capitalize}}</h6>  
+
+                        <hr>
+
+                        <div><h2 class=" ml-2 d-inline-block">{{ produit.prix|capitalize}}€</h2></div>
+
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    
+    </div>
+    
+
+    
+
+{% endblock %}

@@ -1,0 +1,31 @@
+/* CSS */
+
+.img300{
+    width: 300px;
+}
+.img200{
+    width: 200px;
+}
+.img150{
+    width: 150px;
+}
+
+.img80{
+    width: 80px;
+}
+
+a{
+    text-decoration: none;
+    color:blueviolet
+}
+
+
+.dropdown-menu[data-bs-popper] {
+    left: -85px;
+}
+
+.filter{
+    display: block;
+    position: sticky;
+    top: 150px;
+}

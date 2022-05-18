@@ -1,0 +1,103 @@
+
+{# {% if is_granted('ROLE_ADMIN') %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+{% else %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+{% endif %} #}
+
+
+{# <nav  class="navbar navbar-expand-lg navbar-light bg-{% if is_granted('ROLE_ADMIN') %}danger{% else %}primary{% endif %}"> #}
+
+
+
+
+
+{% if app.user %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% set color = "warning" %}
+    {% else %}
+        {% set color = "success" %}
+    {% endif %} 
+{% else %}
+    {% set color = "primary" %}
+{% endif %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-{{color}}">
+
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="{{ path('home') }}">Bijouterie</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ path('app_main') }}">Main</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ path('catalogue') }}">Catalogue</a>
+                </li>
+            </ul>
+
+
+                
+
+       
+
+                {#
+                    La fonction twig path() permet de créer des redirections internes
+                    1e argument obligatoire : c'est LE NOM de la route
+                    2e argument facultatif (tableau des paramètres)
+
+                             key      value
+                    PHP    ['id'   =>   3 ]
+                    TWIG   {'id'   :   3 }
+                #}
+
+            <ul class="navbar-nav ms-auto">
+                {% if app.user %}{# connecté #}
+
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                Back Office
+                            {% else %}
+                                {{ app.user.prenom }}
+                            {% endif %}
+                            
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ path('app_profil') }}">Profil</a></li>
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a class="dropdown-item" href="{{ path('app_admin') }}">Back Office</a></li>
+                                <li><a class="dropdown-item" href="{{ path('produit_afficher') }}">Gestion des produits</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_admin_categorie_index') }}">Gestion des catégories</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_admin_marque_index') }}">Gestion des marques</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_admin_matiere_index') }}">Gestion des matières</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                        </ul>
+
+                    </li>
+
+                {% else %}{# non connecté #}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ path('app_register') }}">Inscription</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ path('app_login') }}">Connexion</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</nav>

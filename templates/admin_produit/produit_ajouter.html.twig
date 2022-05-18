@@ -1,0 +1,81 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} | Back Office | Ajouter un produit{% endblock %}
+
+{% block h1 %}Ajouter un produit{% endblock %}
+
+{% block body %}
+
+    <a class="btn btn-dark my-3" href="{{app.request.headers.get('referer')}}">Retour</a>
+
+    {# {{ form(formProduit) }} #}
+   
+    {# 
+        La fonction twig form() permet d'afficher la vue d'un formulaire
+        de la balise ouvrante à la balise fermante <form></form>
+        
+    #}
+    <div class="col-md-8 mx-auto">
+        {{ form_start(formProduit) }} {# balise ouvrante <form> #}
+    
+            
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(formProduit.titre)}}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(formProduit.prix, { 'money_pattern': '{{ widget }} €' }) }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_row(formProduit.categorie)}}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(formProduit.marque)}}
+                </div>
+            </div>
+
+            {{ form_row(formProduit.matiere)}}
+            
+
+            {{ form_row(formProduit.description)}}
+            
+            {{ form_row(formProduit.image)}}
+
+
+            <div id="zone" class="text-center"></div>
+
+            {#
+                form_row = form_label + form_errors + form_widget + form_help
+            #}
+
+
+            <input type="submit" value="Ajouter" class="btn btn-danger col-md-12 mt-3">
+
+        {{ form_end(formProduit) }} {# balise fermante <form> #}
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(".select2").select2();
+        function loadFile(event)
+        {
+
+            let zone = document.getElementById("zone");
+            zone.innerHTML = "";
+
+            let image = document.createElement('img');
+            image.setAttribute('src', URL.createObjectURL(event.target.files[0]));
+            image.setAttribute('class', 'img200');
+
+            zone.append(image);
+        }
+
+    </script>
+{% endblock %}
+

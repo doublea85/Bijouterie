@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %} {# héritage du fichier base.html.twig #}
+
+{% block title %} {{   parent()   }}  | Accueil{% endblock %}
+{# commentaire 
+
+    {{ }} : interpolation => variable / fonction twig
+    {% %} : commande : block, condition, boucle ect... 
+
+#}
+
+{# la fonction twig parent() permet de récupérer la valeur initiale située sur le fichier qu'on hérite : base.html.twig #}
+
+{#
+    les blocks sont des "zones" localisées sur le fichier qu'on hérite basehtml.twig
+
+    on place des élements à des endroits précis de l'architecture HTML
+
+#}
+{% block h1 %}Accueil{% endblock %}
+
+{% block body %}
+    {#
+        Lorsqu'on est connecté, est créé dans la variable d'environnement app, un tableau user contenant des propriétés de l'objet (id, nom, prenom, email ...)
+    #}
+    <h2>
+        Bienvenue
+        {% if app.user %} {# connecté #}
+            {{ app.user.prenom }}
+        {% else %}{# non connecté #}
+            inconnu
+        {% endif %}
+    </h2>
+
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore sequi alias eos. Quis, velit deserunt mollitia nisi illo voluptatum perspiciatis dicta accusantium magnam modi similique totam, veniam ullam animi fugiat nobis illum laboriosam id laudantium libero. Dolor, delectus, incidunt officia nisi deleniti iste maiores error quis suscipit recusandae quam necessitatibus.
+
+    {% set age = 100 %} {# variable en twig #}
+
+    {% if age >= 18 %}
+        <h4>Majeur</h4>
+    {% else %}
+        <h4>Mineur</h4>
+    {% endif %}
+
+    {% for i in 1..10 %}
+        {{ i }}
+    {% endfor %}
+
+    <img src="{{ asset('images/home.jpg') }}" class="img300" alt="">
+
+
+    <br>
+
+
+   
+
+
+
+
+{% endblock %}

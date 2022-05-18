@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent()}} | Back Office | {{ categorie.nom|capitalize }}{% endblock %}
+
+{% block h1 %}{{ categorie.nom|capitalize }}{% endblock %}
+
+{% block body %}
+
+    <a class="btn btn-dark my-3" href="{{ path('app_admin_categorie_index') }}">Retour</a>
+
+    {{ include('admin_categorie/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    
+{% endblock %}

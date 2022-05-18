@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block h1 %}Mon Profil{% endblock %}
+{% block body %}
+
+    <ul>
+        <li>Nom : {{ app.user.nom }}</li>
+        <li>Prénom : {{ app.user.prenom }}</li>
+        <li>Email : {{ app.user.email }}</li>
+    </ul>
+
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-success" href="">Modifier Profil</a>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-warning" href="">Modifier Mot de passe</a>
+        </div>
+    </div>
+{% endblock %}
